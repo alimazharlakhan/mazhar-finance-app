@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mazhar's Finances - Freelancer Finance &amp; Wealth Suite</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans, JetBrains Mono, Noto Sans Arabic & Noto Nastaliq Urdu -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857'
+            },
+            accent: {
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5'
+            },
+            surface: {
+              dark: '#090d16',
+              card: '#111827',
+              border: 'rgba(255, 255, 255, 0.08)'
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Chart.js and Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- i18n Translation Engine -->
+  <script src="js/i18n.js"></script>
+</head>
+<body class="bg-surface-dark text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
+
+  <!-- Main Container -->
+  <div class="flex-1 flex overflow-hidden">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 border-r border-slate-800/80 bg-slate-950/60 backdrop-blur-xl flex flex-col justify-between hidden md:flex z-20">
+      <div>
+        <!-- Logo & Brand Header -->
+        <div class="p-6 border-b border-slate-800/80 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-white font-bold text-lg">
+              <i class="fa-solid fa-chart-pie"></i>
+            </div>
+            <div>
+              <h1 class="font-extrabold text-base tracking-tight text-white flex items-center gap-1.5">
+                <span data-i18n="appName">Mazhar's Finances</span> <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" data-i18n="appBadge">PRO</span>
+              </h1>
+              <p class="text-[11px] text-slate-400 font-medium" data-i18n="appSubtitle">Freelancer Finance</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="p-4 space-y-1.5 text-sm font-medium">
+          <button class="nav-link w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl border border-transparent transition-all bg-emerald-500/10 text-emerald-400 border-emerald-500 font-semibold" data-tab="dashboard">
+            <i class="fa-solid fa-gauge-high w-5 text-center"></i>
+            <span data-i18n="navDashboard">Dashboard</span>
+          </button>
+          <button class="nav-link w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl border border-transparent text-slate-400 hover:text-slate-200 hover:bg-white/[0.03] transition-all" data-tab="incomes">
+            <i class="fa-solid fa-arrow-down-left w-5 text-center text-emerald-400"></i>
+            <span data-i18n="navIncomes">Income Record</span>
+          </button>
+          <button class="nav-link w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl border border-transparent text-slate-400 hover:text-slate-200 hover:bg-white/[0.03] transition-all" data-tab="expenses">
+            <i class="fa-solid fa-arrow-up-right w-5 text-center text-rose-400"></i>
+            <span data-i18n="navExpenses">Expense Manager</span>
+          </button>
+          <button class="nav-link w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl border border-transparent text-slate-400 hover:text-slate-200 hover:bg-white/[0.03] transition-all" data-tab="invoices">
+            <i class="fa-solid fa-file-invoice-dollar w-5 text-center text-indigo-400"></i>
+            <span data-i18n="navInvoices">Invoices & Billing</span>
+          </button>
+          <button class="nav-link w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl border border-transparent text-slate-400 hover:text-slate-200 hover:bg-white/[0.03] transition-all" data-tab="budgets">
+            <i class="fa-solid fa-sliders w-5 text-center text-cyan-400"></i>
+            <span data-i18n="navBudgets">Budget Tracker</span>
+          </button>
+          <button class="nav-link w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl border border-transparent text-slate-400 hover:text-slate-200 hover:bg-white/[0.03] transition-all" data-tab="loans">
+            <i class="fa-solid fa-landmark w-5 text-center text-amber-400"></i>
+            <span data-i18n="navLoans">Loans & Debts</span>
+          </button>
+          <button class="nav-link w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl border border-transparent text-slate-400 hover:text-slate-200 hover:bg-white/[0.03] transition-all" data-tab="tax_vault">
+            <i class="fa-solid fa-shield-halved w-5 text-center text-teal-400"></i>
+            <span data-i18n="navTaxVault">Tax Shield Vault</span>
+          </button>
+          <button class="nav-link w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl border border-transparent text-slate-400 hover:text-slate-200 hover:bg-white/[0.03] transition-all" data-tab="goals">
+            <i class="fa-solid fa-bullseye w-5 text-center text-purple-400"></i>
+            <span data-i18n="navGoals">Savings & Gear</span>
+          </button>
+          <button class="nav-link w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl border border-transparent text-slate-400 hover:text-slate-200 hover:bg-white/[0.03] transition-all" data-tab="settings">
+            <i class="fa-solid fa-gear w-5 text-center text-slate-400"></i>
+            <span data-i18n="navSettings">Settings & Backup</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Freelancer Profile Mini Card -->
+      <div class="p-4 m-4 rounded-2xl bg-slate-900/80 border border-slate-800">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-indigo-600 flex items-center justify-center font-bold text-white shadow-md text-sm">
+            M
+          </div>
+          <div class="overflow-hidden">
+            <p id="headerFreelancerName" class="text-xs font-bold text-slate-100 truncate">Mazhar</p>
+            <p id="headerBusinessName" class="text-[11px] text-slate-400 truncate">Mazhar's Finances</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto bg-surface-dark">
+      
+      <!-- Top Navigation & Global Controls -->
+      <header class="sticky top-0 z-30 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl px-6 py-3.5 flex items-center justify-between">
+        
+        <!-- Search & Filter Controls -->
+        <div class="flex items-center gap-3 flex-1 max-w-xl">
+          <div class="relative w-full">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 transform -translate-y-1/2 text-slate-500 text-xs"></i>
+            <input type="text" id="globalSearchInput" data-i18n-placeholder="searchPlaceholder" placeholder="Search clients, projects, categories, invoices..." class="w-full bg-slate-900/80 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors">
+          </div>
+          
+          <select id="periodFilterSelect" class="bg-slate-900/80 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-emerald-500 transition-colors cursor-pointer">
+            <option value="all" data-i18n="periodAll">All Time</option>
+            <option value="this_month" data-i18n="periodThisMonth">This Month</option>
+            <option value="last_month" data-i18n="periodLastMonth">Last Month</option>
+            <option value="this_year" data-i18n="periodThisYear">This Year (2026)</option>
+          </select>
+        </div>
+
+        <!-- Language Selector, Action Buttons & Theme Toggle -->
+        <div class="flex items-center gap-2 ml-4">
+          
+          <!-- Modern Language Segmented Switcher (English / Urdu / Sindhi) -->
+          <div class="flex items-center p-1 rounded-xl bg-slate-900/90 border border-slate-800 text-xs shadow-inner">
+            <button data-lang-btn="en" class="px-2.5 py-1 rounded-lg transition-all text-slate-300 hover:text-white font-medium" title="English">
+              English
+            </button>
+            <button data-lang-btn="ur" class="px-2.5 py-1 rounded-lg transition-all text-slate-300 hover:text-white font-medium" title="اردو (Urdu)">
+              اردو
+            </button>
+            <button data-lang-btn="sd" class="px-2.5 py-1 rounded-lg transition-all text-slate-300 hover:text-white font-medium" title="سنڌي (Sindhi)">
+              سنڌي
+            </button>
+          </div>
+
+          <!-- Quick Log Dropdowns/Buttons -->
+          <button data-open-modal="modalAddIncome" class="px-3 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold shadow-lg shadow-emerald-500/20 flex items-center gap-1.5 transition-all">
+            <i class="fa-solid fa-plus"></i>
+            <span class="hidden sm:inline" data-i18n="addIncome">Add Income</span>
+          </button>
+          
+          <button data-open-modal="modalAddExpense" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition-all">
+            <i class="fa-solid fa-minus text-rose-400"></i>
+            <span class="hidden sm:inline" data-i18n="addExpense">Add Expense</span>
+          </button>
+
+          <!-- Theme Switcher -->
+          <button id="themeToggleBtn" title="Toggle Theme" class="w-9 h-9 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 flex items-center justify-center text-slate-300 transition-colors">
+            <i class="fa-solid fa-sun text-amber-400"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- TAB 1: DASHBOARD -->
+      <section id="tab-dashboard" class="tab-pane p-6 space-y-6">
+        
+        <!-- Freelancer Stability & Health Banner -->
+        <div class="glass-panel p-6 rounded-2xl relative overflow-hidden bg-gradient-to-r from-emerald-950/30 via-slate-900/60 to-indigo-950/30 border border-slate-800">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+            <div>
+              <div class="flex items-center gap-2.5 mb-1.5">
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span data-i18n="healthMeterBadge">Financial Health Meter</span>
+                </span>
+                <span id="kpiHealthLabel" class="text-xs font-semibold text-emerald-400" data-i18n="healthExcellent">Excellent Stability</span>
+              </div>
+              <h2 class="text-xl md:text-2xl font-extrabold text-white tracking-tight" data-i18n="bannerTitle">
+                Freelancer Net Position & Runway
+              </h2>
+              <p class="text-xs text-slate-400 mt-1 max-w-xl" data-i18n="bannerDesc">
+                Automatic calculation of safe-harbor tax reserves, liquid emergency runway cushion, and cash flow velocity.
+              </p>
+            </div>
+
+            <!-- Health Score Gauge -->
+            <div class="flex items-center gap-4 bg-slate-900/80 p-4 rounded-xl border border-slate-800/80">
+              <div class="text-right">
+                <p class="text-[11px] text-slate-400 font-medium" data-i18n="stabilityIndex">Stability Index</p>
+                <p id="kpiHealthScore" class="text-2xl font-black font-numeric text-emerald-400">84/100</p>
+              </div>
+              <div class="w-28">
+                <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                  <div id="kpiHealthProgressBar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-700" style="width: 84%"></div>
+                </div>
+                <p class="text-[10px] text-slate-500 text-center mt-1" data-i18n="healthGoalText">Goal: >80</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Top KPI Cards (PKR) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Gross Paid Income -->
+          <div class="glass-panel p-5 rounded-2xl border border-slate-800/80 relative overflow-hidden group">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-400" data-i18n="kpiGrossIncomeTitle">Realized Gross Income</span>
+              <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xs">
+                <i class="fa-solid fa-arrow-down-left"></i>
+              </div>
+            </div>
+            <h3 id="kpiGrossIncome" class="text-2xl font-bold font-numeric text-white mt-3">₨ 1,088,000</h3>
+            <div class="flex items-center gap-1.5 mt-2 text-xs text-emerald-400">
+              <i class="fa-solid fa-circle-check text-[10px]"></i>
+              <span data-i18n="kpiGrossIncomeSub">Cash collected in bank</span>
+            </div>
+          </div>
+
+          <!-- Total Expenses -->
+          <div class="glass-panel p-5 rounded-2xl border border-slate-800/80 relative overflow-hidden group">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-400" data-i18n="kpiExpensesTitle">Total Business Expenses</span>
+              <div class="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-400 flex items-center justify-center text-xs">
+                <i class="fa-solid fa-arrow-up-right"></i>
+              </div>
+            </div>
+            <h3 id="kpiTotalExpenses" class="text-2xl font-bold font-numeric text-white mt-3">₨ 291,500</h3>
+            <div class="flex items-center gap-1.5 mt-2 text-xs text-slate-400">
+              <span data-i18n="kpiExpensesSub">Includes SaaS & gear write-offs</span>
+            </div>
+          </div>
+
+          <!-- Net Profit / Cash Flow -->
+          <div class="glass-panel p-5 rounded-2xl border border-slate-800/80 relative overflow-hidden group">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-400" data-i18n="kpiNetProfitTitle">Net Freelancer Profit</span>
+              <div class="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-xs">
+                <i class="fa-solid fa-chart-line"></i>
+              </div>
+            </div>
+            <h3 id="kpiNetCash" class="text-2xl font-bold font-numeric text-emerald-400 mt-3">₨ 796,500</h3>
+            <div class="flex items-center gap-1.5 mt-2 text-xs text-indigo-300">
+              <i class="fa-solid fa-sparkles text-[10px]"></i>
+              <span data-i18n="kpiNetProfitSub">Gross - Total Expenses</span>
+            </div>
+          </div>
+
+          <!-- Pending Invoices / Accounts Receivable -->
+          <div class="glass-panel p-5 rounded-2xl border border-slate-800/80 relative overflow-hidden group">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-400" data-i18n="kpiPendingTitle">Pending Receivables</span>
+              <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center text-xs">
+                <i class="fa-solid fa-clock"></i>
+              </div>
+            </div>
+            <h3 id="kpiPendingReceivable" class="text-2xl font-bold font-numeric text-amber-400 mt-3">₨ 560,000</h3>
+            <div class="flex items-center gap-1.5 mt-2 text-xs text-amber-400/80">
+              <span data-i18n="kpiPendingSub">Uncollected client invoices</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secondary 4 Mini KPIs: Taxes, Runway, Debt, Savings -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between">
+            <div>
+              <p class="text-[11px] text-slate-400" data-i18n="kpiTaxReserveTitle">Tax Safe-Harbor Reserve</p>
+              <p id="kpiTaxReserve" class="text-base font-bold font-numeric text-teal-400 mt-0.5">₨ 135,000</p>
+            </div>
+            <i class="fa-solid fa-shield-halved text-teal-500/40 text-lg"></i>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between">
+            <div>
+              <p class="text-[11px] text-slate-400" data-i18n="kpiTaxSavingsTitle">Tax Write-Off Savings</p>
+              <p id="kpiTaxSavings" class="text-base font-bold font-numeric text-emerald-400 mt-0.5">₨ 29,475</p>
+            </div>
+            <i class="fa-solid fa-receipt text-emerald-500/40 text-lg"></i>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between">
+            <div>
+              <p class="text-[11px] text-slate-400" data-i18n="kpiRunwayTitle">Emergency Buffer Runway</p>
+              <p id="kpiRunwayMonths" class="text-base font-bold font-numeric text-cyan-400 mt-0.5">6.8 mo</p>
+            </div>
+            <i class="fa-solid fa-life-ring text-cyan-500/40 text-lg"></i>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between">
+            <div>
+              <p class="text-[11px] text-slate-400" data-i18n="kpiDebtTitle">Active Debt Liabilities</p>
+              <p id="kpiDebtLiability" class="text-base font-bold font-numeric text-rose-400 mt-0.5">₨ 560,000</p>
+            </div>
+            <i class="fa-solid fa-landmark text-rose-500/40 text-lg"></i>
+          </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2 glass-panel p-6 rounded-2xl border border-slate-800 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                  <i class="fa-solid fa-chart-simple text-emerald-400"></i> <span data-i18n="cashFlowTitle">Cash Flow & Monthly Trends</span>
+                </h3>
+                <p class="text-xs text-slate-400 mt-0.5" data-i18n="cashFlowSub">Income vs Expense vs Net Profit trajectory over last 6 months</p>
+              </div>
+            </div>
+            <div class="relative h-72 w-full">
+              <canvas id="cashFlowChart"></canvas>
+            </div>
+          </div>
+
+          <div class="glass-panel p-6 rounded-2xl border border-slate-800 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-3">
+              <div>
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                  <i class="fa-solid fa-pie-chart text-indigo-400"></i> <span data-i18n="spendingTitle">Spending Distribution</span>
+                </h3>
+                <p class="text-xs text-slate-400 mt-0.5" data-i18n="spendingSub">Categories & SaaS tool breakdowns</p>
+              </div>
+            </div>
+            <div class="relative h-60 w-full flex items-center justify-center">
+              <canvas id="expenseDonutChart"></canvas>
+            </div>
+            <div class="text-center pt-2 border-t border-slate-800/80">
+              <span class="text-[11px] text-slate-400" data-i18n="spendingFooter">Hover slices for category details and tax deductible share</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Grid: Client Revenue Breakdown & Recent Transactions -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="glass-panel p-6 rounded-2xl border border-slate-800">
+            <h3 class="text-base font-bold text-white flex items-center gap-2 mb-1">
+              <i class="fa-solid fa-building text-cyan-400"></i> <span data-i18n="topClientTitle">Top Client Revenue</span>
+            </h3>
+            <p class="text-xs text-slate-400 mb-4" data-i18n="topClientSub">Revenue share by client contract</p>
+            <div class="relative h-56 w-full">
+              <canvas id="clientRevenueChart"></canvas>
+            </div>
+          </div>
+
+          <div class="lg:col-span-2 glass-panel p-6 rounded-2xl border border-slate-800">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                  <i class="fa-solid fa-clock-rotate-left text-amber-400"></i> <span data-i18n="recentLedgerTitle">Recent Ledger Activity</span>
+                </h3>
+                <p class="text-xs text-slate-400 mt-0.5" data-i18n="recentLedgerSub">Latest income receipts, write-offs, and expenditures</p>
+              </div>
+              <button onclick="window.finFlowApp.switchTab('incomes')" class="text-xs font-semibold text-emerald-400 hover:text-emerald-300">
+                <span data-i18n="viewAllLedger">View All Ledger →</span>
+              </button>
+            </div>
+            <div id="recentTransactionsList" class="space-y-1 divide-y divide-slate-800/50">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: INCOMES -->
+      <section id="tab-incomes" class="tab-pane hidden p-6 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-extrabold text-white" data-i18n="incomesTitle">Freelance Income Ledger</h2>
+            <p class="text-xs text-slate-400 mt-1" data-i18n="incomesSub">Track milestone payments, hourly contracts, retainers, and marketplace royalties</p>
+          </div>
+          <button data-open-modal="modalAddIncome" class="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold shadow-lg shadow-emerald-500/20 flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i>
+            <span data-i18n="btnLogIncome">Log New Income</span>
+          </button>
+        </div>
+
+        <!-- Filter bar -->
+        <div class="flex flex-wrap items-center gap-2 text-xs">
+          <button onclick="window.finFlowApp.incomeFilter='all'; window.finFlowApp.renderIncomesTable()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium" data-i18n="filterAllIncomes">All Incomes</button>
+          <button onclick="window.finFlowApp.incomeFilter='Paid'; window.finFlowApp.renderIncomesTable()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-400 font-medium" data-i18n="filterPaid">Paid Only</button>
+          <button onclick="window.finFlowApp.incomeFilter='Pending'; window.finFlowApp.renderIncomesTable()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-400 font-medium" data-i18n="filterPending">Pending</button>
+          <button onclick="window.finFlowApp.incomeFilter='Retainer'; window.finFlowApp.renderIncomesTable()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-indigo-400 font-medium" data-i18n="filterRetainers">Retainers</button>
+          <button onclick="window.finFlowApp.incomeFilter='Hourly'; window.finFlowApp.renderIncomesTable()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-400 font-medium" data-i18n="filterHourly">Hourly</button>
+        </div>
+
+        <!-- Table Container -->
+        <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-800 text-xs font-semibold text-slate-400 uppercase tracking-wider bg-slate-900/50">
+                  <th class="py-3 px-4" data-i18n="thClientProject">Client & Project</th>
+                  <th class="py-3 px-4" data-i18n="thBillingModel">Billing Model</th>
+                  <th class="py-3 px-4" data-i18n="thPlatformInvoice">Platform & Invoice</th>
+                  <th class="py-3 px-4" data-i18n="thDate">Date</th>
+                  <th class="py-3 px-4" data-i18n="thAmount">Amount</th>
+                  <th class="py-3 px-4" data-i18n="thStatus">Status</th>
+                  <th class="py-3 px-4 text-right" data-i18n="thActions">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="incomesTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: EXPENSES -->
+      <section id="tab-expenses" class="tab-pane hidden p-6 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-extrabold text-white" data-i18n="expensesTitle">Expense & Tax Write-Off Tracker</h2>
+            <p class="text-xs text-slate-400 mt-1" data-i18n="expensesSub">Deduct software, office equipment, cloud hosting, and contractor payments to lower taxable income</p>
+          </div>
+          <button data-open-modal="modalAddExpense" class="px-4 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-xs font-semibold shadow-lg shadow-rose-500/20 flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i>
+            <span data-i18n="btnLogExpense">Log Expense</span>
+          </button>
+        </div>
+
+        <!-- Filters -->
+        <div class="flex flex-wrap items-center gap-2 text-xs">
+          <button onclick="window.finFlowApp.expenseFilter='all'; window.finFlowApp.renderExpensesTable()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium" data-i18n="filterAllExpenses">All Expenses</button>
+          <button onclick="window.finFlowApp.expenseFilter='deductible'; window.finFlowApp.renderExpensesTable()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-400 font-medium" data-i18n="filterTaxDeductible">100% / 50% Tax Write-Offs</button>
+          <button onclick="window.finFlowApp.expenseFilter='personal'; window.finFlowApp.renderExpensesTable()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 font-medium" data-i18n="filterPersonal">Personal Non-Deductible</button>
+        </div>
+
+        <!-- Table Container -->
+        <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-800 text-xs font-semibold text-slate-400 uppercase tracking-wider bg-slate-900/50">
+                  <th class="py-3 px-4" data-i18n="thExpenseItem">Item & Description</th>
+                  <th class="py-3 px-4" data-i18n="thCategory">Category</th>
+                  <th class="py-3 px-4" data-i18n="thPaymentCycle">Payment & Cycle</th>
+                  <th class="py-3 px-4" data-i18n="thDate">Date</th>
+                  <th class="py-3 px-4" data-i18n="thAmount">Amount</th>
+                  <th class="py-3 px-4" data-i18n="thDeductibility">Tax Deductibility</th>
+                  <th class="py-3 px-4 text-right" data-i18n="thActions">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="expensesTableBody">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: INVOICES -->
+      <section id="tab-invoices" class="tab-pane hidden p-6 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-extrabold text-white" data-i18n="invoicesTitle">Freelancer Invoices & Billing</h2>
+            <p class="text-xs text-slate-400 mt-1" data-i18n="invoicesSub">Generate branded client invoices, monitor due dates, and print PDF invoices</p>
+          </div>
+          <button data-open-modal="modalCreateInvoice" class="px-4 py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-semibold shadow-lg shadow-indigo-500/20 flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i>
+            <span data-i18n="btnCreateInvoice">Create Invoice</span>
+          </button>
+        </div>
+
+        <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-800 text-xs font-semibold text-slate-400 uppercase tracking-wider bg-slate-900/50">
+                  <th class="py-3 px-4" data-i18n="thInvoiceNum">Invoice #</th>
+                  <th class="py-3 px-4" data-i18n="thClient">Client</th>
+                  <th class="py-3 px-4" data-i18n="thDates">Dates</th>
+                  <th class="py-3 px-4" data-i18n="thTotal">Total Amount</th>
+                  <th class="py-3 px-4" data-i18n="thStatus">Status</th>
+                  <th class="py-3 px-4 text-right" data-i18n="thActions">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="invoicesTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: BUDGETS -->
+      <section id="tab-budgets" class="tab-pane hidden p-6 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-extrabold text-white" data-i18n="budgetsTitle">Monthly Budget Limits</h2>
+            <p class="text-xs text-slate-400 mt-1" data-i18n="budgetsSub">Keep overhead and personal living costs within predetermined parameters</p>
+          </div>
+          <button data-open-modal="modalAddBudget" class="px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-semibold shadow-lg shadow-cyan-500/20 flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i>
+            <span data-i18n="btnAddBudget">Add Category Budget</span>
+          </button>
+        </div>
+
+        <div id="budgetsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- Dynamically populated -->
+        </div>
+      </section>
+
+      <!-- TAB 6: LOANS & DEBTS -->
+      <section id="tab-loans" class="tab-pane hidden p-6 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-extrabold text-white" data-i18n="loansTitle">Loan & Debt Management</h2>
+            <p class="text-xs text-slate-400 mt-1" data-i18n="loansSub">Track hardware leases, bank credit lines, and money owed to you by collaborators</p>
+          </div>
+          <button data-open-modal="modalAddLoan" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold shadow-lg shadow-amber-500/20 flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i>
+            <span data-i18n="btnAddLoan">Add Loan / Debt</span>
+          </button>
+        </div>
+
+        <div id="loansGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Dynamically populated -->
+        </div>
+      </section>
+
+      <!-- TAB 7: TAX VAULT -->
+      <section id="tab-tax_vault" class="tab-pane hidden p-6 space-y-6">
+        <div class="glass-panel p-6 rounded-2xl border border-teal-500/30 bg-gradient-to-br from-teal-950/20 to-slate-900/60">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-500/20 text-teal-400 border border-teal-500/30">
+                <i class="fa-solid fa-shield-halved mr-1"></i> <span data-i18n="taxVaultBadge">Freelancer Tax Safe-Harbor</span>
+              </span>
+              <h2 class="text-2xl font-extrabold text-white mt-2" data-i18n="taxVaultTitle">Tax Reserve & Write-Off Summary</h2>
+              <p class="text-xs text-slate-400 mt-1 max-w-xl" data-i18n="taxVaultDesc">
+                Freelancers are responsible for self-employment taxes. FinFlow automatically calculates your estimated quarterly tax obligations after accounting for legal deductions.
+              </p>
+            </div>
+            <div class="text-right">
+              <span class="text-xs text-slate-400" data-i18n="taxBracket">Assumed Tax Bracket</span>
+              <p id="taxVaultRate" class="text-3xl font-black font-numeric text-teal-400">15%</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+            <p class="text-[11px] text-slate-400" data-i18n="taxGross">Gross Paid Revenue</p>
+            <p id="taxVaultGross" class="text-xl font-bold font-numeric text-white mt-1">₨ 0</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+            <p class="text-[11px] text-slate-400" data-i18n="taxDeductions">Total Deductions</p>
+            <p id="taxVaultDeductions" class="text-xl font-bold font-numeric text-emerald-400 mt-1">₨ 0</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+            <p class="text-[11px] text-slate-400" data-i18n="taxTaxable">Net Taxable Base</p>
+            <p id="taxVaultTaxable" class="text-xl font-bold font-numeric text-slate-100 mt-1">₨ 0</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-900 border border-teal-500/40">
+            <p class="text-[11px] text-teal-400 font-semibold" data-i18n="taxRecommended">Recommended Tax Vault</p>
+            <p id="taxVaultRequiredReserve" class="text-xl font-bold font-numeric text-teal-400 mt-1">₨ 0</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-900 border border-emerald-500/40">
+            <p class="text-[11px] text-emerald-400 font-semibold" data-i18n="taxSaved">Tax Dollars Saved</p>
+            <p id="taxVaultSavingsEarned" class="text-xl font-bold font-numeric text-emerald-400 mt-1">₨ 0</p>
+          </div>
+        </div>
+
+        <!-- Itemized Deductible Table for CPA -->
+        <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden">
+          <div class="p-4 bg-slate-900/60 border-b border-slate-800 flex items-center justify-between">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-file-excel text-emerald-400"></i> <span data-i18n="taxTableTitle">Itemized Business Deductions for Accountant</span>
+            </h3>
+            <button onclick="window.finFlowApp.exportDataCSV('expenses')" class="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200">
+              <i class="fa-solid fa-download mr-1"></i> <span data-i18n="btnExportScheduleC">Export Schedule C (CSV)</span>
+            </button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-800 text-xs font-semibold text-slate-400 uppercase tracking-wider bg-slate-900/40">
+                  <th class="py-3 px-4" data-i18n="thExpenseItem">Expense Item</th>
+                  <th class="py-3 px-4" data-i18n="thCategory">Category</th>
+                  <th class="py-3 px-4" data-i18n="thGrossPaid">Gross Paid</th>
+                  <th class="py-3 px-4" data-i18n="thAllowable">Allowable Deduction</th>
+                  <th class="py-3 px-4 text-right" data-i18n="thTaxSavedCol">Tax Saved</th>
+                </tr>
+              </thead>
+              <tbody id="taxDeductionsTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 8: GOALS -->
+      <section id="tab-goals" class="tab-pane hidden p-6 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-extrabold text-white" data-i18n="goalsTitle">Savings & Studio Gear Goals</h2>
+            <p class="text-xs text-slate-400 mt-1" data-i18n="goalsSub">Set milestones for emergency cushions, equipment upgrades, and vacations</p>
+          </div>
+          <button data-open-modal="modalAddGoal" class="px-4 py-2.5 rounded-xl bg-purple-500 hover:bg-purple-600 text-white text-xs font-semibold shadow-lg shadow-purple-500/20 flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i>
+            <span data-i18n="btnAddGoal">Add New Goal</span>
+          </button>
+        </div>
+
+        <div id="goalsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Dynamically populated -->
+        </div>
+      </section>
+
+      <!-- TAB 9: SETTINGS -->
+      <section id="tab-settings" class="tab-pane hidden p-6 space-y-6 max-w-4xl">
+        <div>
+          <h2 class="text-2xl font-extrabold text-white" data-i18n="settingsTitle">Settings & Data Management</h2>
+          <p class="text-xs text-slate-400 mt-1" data-i18n="settingsSub">Configure your currency, tax parameters, business profile, and local backups</p>
+        </div>
+
+        <!-- Profile & Currency Settings -->
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800">
+          <h3 class="text-base font-bold text-white mb-4" data-i18n="profileDefaults">Freelancer Profile & Defaults</h3>
+          <form id="settingsForm" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblFullName">Your Full Name</label>
+                <input type="text" id="settingFreelancerName" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-slate-200 focus:outline-none focus:border-emerald-500">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblBusinessName">Business / Studio Name</label>
+                <input type="text" id="settingBusinessName" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-slate-200 focus:outline-none focus:border-emerald-500">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblEmail">Business Email</label>
+                <input type="email" id="settingEmail" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-slate-200 focus:outline-none focus:border-emerald-500">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblCurrency">Base Currency</label>
+                <select id="settingCurrency" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-slate-200 focus:outline-none focus:border-emerald-500">
+                  <option value="PKR" selected>PKR (₨) - Pakistani Rupee (پاکستانی روپیہ)</option>
+                  <option value="USD">USD ($) - US Dollar</option>
+                  <option value="EUR">EUR (€) - Euro</option>
+                  <option value="GBP">GBP (£) - British Pound</option>
+                  <option value="AED">AED (AED) - UAE Dirham</option>
+                  <option value="CAD">CAD ($) - Canadian Dollar</option>
+                  <option value="AUD">AUD ($) - Australian Dollar</option>
+                  <option value="INR">INR (₹) - Indian Rupee</option>
+                  <option value="JPY">JPY (¥) - Japanese Yen</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblTaxRate">Estimated Tax Rate Reserve (%)</label>
+                <input type="number" id="settingTaxRate" min="0" max="60" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-slate-200 focus:outline-none focus:border-emerald-500">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblBurnRate">Avg. Monthly Burn (for Runway calculation)</label>
+                <input type="number" id="settingAvgBurn" min="100" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-slate-200 focus:outline-none focus:border-emerald-500">
+              </div>
+            </div>
+
+            <div class="pt-3">
+              <button type="submit" class="px-5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold shadow-md shadow-emerald-500/20" data-i18n="btnSavePreferences">
+                Save Preferences
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Backup, Restore, and Reset -->
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-4">
+          <h3 class="text-base font-bold text-white" data-i18n="dataPortability">Data Portability & Local Backups</h3>
+          <p class="text-xs text-slate-400" data-i18n="dataPortabilitySub">All data is kept 100% private in your browser LocalStorage. You can export complete snapshots anytime.</p>
+          
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <button onclick="window.finFlowApp.exportDataJSON()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-2">
+              <i class="fa-solid fa-download"></i> <span data-i18n="btnDownloadJSON">Download Full JSON Backup</span>
+            </button>
+            <button onclick="window.finFlowApp.exportDataCSV('transactions')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-2">
+              <i class="fa-solid fa-file-csv"></i> <span data-i18n="btnExportCSV">Export All Transactions (CSV)</span>
+            </button>
+            <label class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-upload"></i> <span data-i18n="btnRestoreJSON">Restore from JSON</span>
+              <input type="file" id="jsonFileInput" accept=".json" class="hidden" onchange="window.finFlowApp.importDataJSON(this)">
+            </label>
+          </div>
+
+          <div class="pt-6 border-t border-slate-800/80 flex flex-wrap items-center gap-3">
+            <button onclick="window.finFlowApp.resetDemo()" class="px-4 py-2 rounded-xl bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 border border-indigo-500/30 text-xs font-semibold">
+              <i class="fa-solid fa-rotate-left mr-1"></i> <span data-i18n="btnResetDemo">Reset to Sample Demo Data</span>
+            </button>
+            <button onclick="window.finFlowApp.clearAllData()" class="px-4 py-2 rounded-xl bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 border border-rose-500/30 text-xs font-semibold">
+              <i class="fa-solid fa-triangle-exclamation mr-1"></i> <span data-i18n="btnClearAll">Clear All Data</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Mobile Bottom Navigation -->
+  <div class="md:hidden border-t border-slate-800 bg-slate-950/90 backdrop-blur-xl px-4 py-2.5 flex items-center justify-around z-30">
+    <button onclick="window.finFlowApp.switchTab('dashboard')" class="text-center text-slate-400 hover:text-emerald-400">
+      <i class="fa-solid fa-gauge-high text-base"></i>
+      <span class="block text-[10px] mt-0.5" data-i18n="navDashboard">Home</span>
+    </button>
+    <button onclick="window.finFlowApp.switchTab('incomes')" class="text-center text-slate-400 hover:text-emerald-400">
+      <i class="fa-solid fa-arrow-down-left text-base text-emerald-400"></i>
+      <span class="block text-[10px] mt-0.5" data-i18n="navIncomes">Income</span>
+    </button>
+    <button onclick="window.finFlowApp.switchTab('expenses')" class="text-center text-slate-400 hover:text-rose-400">
+      <i class="fa-solid fa-arrow-up-right text-base text-rose-400"></i>
+      <span class="block text-[10px] mt-0.5" data-i18n="navExpenses">Expense</span>
+    </button>
+    <button onclick="window.finFlowApp.switchTab('invoices')" class="text-center text-slate-400 hover:text-indigo-400">
+      <i class="fa-solid fa-file-invoice text-base text-indigo-400"></i>
+      <span class="block text-[10px] mt-0.5" data-i18n="navInvoices">Invoices</span>
+    </button>
+    <button onclick="window.finFlowApp.switchTab('settings')" class="text-center text-slate-400 hover:text-slate-200">
+      <i class="fa-solid fa-gear text-base"></i>
+      <span class="block text-[10px] mt-0.5" data-i18n="navSettings">Settings</span>
+    </button>
+  </div>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- MODAL 1: ADD INCOME -->
+  <div id="modalAddIncome" class="modal-wrapper modal-backdrop fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-lg rounded-2xl p-6 border border-slate-800 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-circle-plus text-emerald-400"></i> <span data-i18n="modalAddIncomeTitle">Record Freelance Income</span>
+        </h3>
+        <button data-close-modal class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <form id="incomeForm" class="space-y-4 mt-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblClientName">Client Name *</label>
+            <input type="text" name="client" required placeholder="e.g. Acme Corp / سنڌ ٽيڪ" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblProjectName">Project / Contract *</label>
+            <input type="text" name="project" required placeholder="e.g. Mobile App Development" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblAmount">Amount (₨) *</label>
+            <input type="number" name="amount" step="1" required placeholder="150000" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-numeric text-emerald-400 font-bold focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblBillingType">Billing Type</label>
+            <select name="type" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-2.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+              <option value="Milestone">Milestone</option>
+              <option value="Hourly">Hourly</option>
+              <option value="Retainer">Retainer</option>
+              <option value="Fixed Price">Fixed Price</option>
+              <option value="Passive / Royalties">Royalties</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblStatus">Status</label>
+            <select name="status" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-2.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+              <option value="Paid">Paid</option>
+              <option value="Pending">Pending</option>
+              <option value="Overdue">Overdue</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblPaymentMethod">Payment Method</label>
+            <select name="platform" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-2.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+              <option value="Direct Wire">Bank Transfer / Wire</option>
+              <option value="Sadapay / Nayapay">Sadapay / Nayapay</option>
+              <option value="Raast / JazzCash">Raast / JazzCash</option>
+              <option value="Wise">Wise</option>
+              <option value="Payoneer">Payoneer</option>
+              <option value="Stripe">Stripe</option>
+              <option value="Upwork">Upwork</option>
+              <option value="Fiverr">Fiverr</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblInvoiceNumber">Invoice Number</label>
+            <input type="text" name="invoiceNumber" placeholder="INV-2026-001" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblDate">Date *</label>
+            <input type="date" name="date" required value="2026-11-06" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblNotes">Notes</label>
+          <textarea name="notes" rows="2" placeholder="Deliverables notes..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"></textarea>
+        </div>
+
+        <div class="pt-3 border-t border-slate-800 flex justify-end gap-2">
+          <button type="button" data-close-modal class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300" data-i18n="btnCancel">Cancel</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-xs font-bold text-white shadow-lg shadow-emerald-500/20" data-i18n="btnSaveIncome">Save Income</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 2: ADD EXPENSE -->
+  <div id="modalAddExpense" class="modal-wrapper modal-backdrop fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-lg rounded-2xl p-6 border border-slate-800 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-receipt text-rose-400"></i> <span data-i18n="modalAddExpenseTitle">Record Business / Personal Expense</span>
+        </h3>
+        <button data-close-modal class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <form id="expenseForm" class="space-y-4 mt-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblExpenseDesc">Expense Description *</label>
+          <input type="text" name="title" required placeholder="e.g. GitHub Copilot / Office Internet" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblCategory">Category *</label>
+            <select name="category" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-2.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+              <option value="Software & AI Tools">Software & AI Tools</option>
+              <option value="Workspace & Office">Workspace & Office</option>
+              <option value="Hosting & Infrastructure">Hosting & Infrastructure</option>
+              <option value="Subcontractors">Subcontractors</option>
+              <option value="Hardware & Gear">Hardware & Gear</option>
+              <option value="Meals & Entertainment">Meals & Entertainment</option>
+              <option value="Personal Living">Personal Living</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblAmount">Amount (₨) *</label>
+            <input type="number" name="amount" step="1" required placeholder="15000" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-numeric text-rose-400 font-bold focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblDate">Date *</label>
+            <input type="date" name="date" required value="2026-11-06" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblPaymentMethod">Payment Method</label>
+            <input type="text" name="paymentMethod" placeholder="Debit Card / Bank" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblFrequency">Frequency</label>
+            <select name="recurring" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-2.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+              <option value="One-Time">One-Time</option>
+              <option value="Monthly">Monthly</option>
+              <option value="Yearly">Yearly</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Tax Deductible Toggle Box -->
+        <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <input type="checkbox" name="taxDeductible" id="chkDeductible" checked class="w-4 h-4 rounded text-emerald-500 focus:ring-0">
+            <div>
+              <label for="chkDeductible" class="text-xs font-bold text-slate-200 cursor-pointer" data-i18n="chkTaxDeductible">Tax Deductible Business Expense</label>
+              <p class="text-[11px] text-slate-400" data-i18n="chkTaxDeductibleSub">Lowers your taxable freelance income</p>
+            </div>
+          </div>
+          <div class="w-24">
+            <select name="deductiblePercent" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-xs text-emerald-400 font-semibold focus:outline-none">
+              <option value="100">100% Write-Off</option>
+              <option value="50">50% (Meals/Events)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblReceiptNotes">Receipt / Invoice Notes</label>
+          <input type="text" name="notes" placeholder="Invoice # or voucher ref" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div class="pt-3 border-t border-slate-800 flex justify-end gap-2">
+          <button type="button" data-close-modal class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300" data-i18n="btnCancel">Cancel</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-rose-500 hover:bg-rose-600 text-xs font-bold text-white shadow-lg shadow-rose-500/20" data-i18n="btnSaveExpense">Save Expense</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 3: CREATE INVOICE -->
+  <div id="modalCreateInvoice" class="modal-wrapper modal-backdrop fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-xl rounded-2xl p-6 border border-slate-800 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-file-invoice text-indigo-400"></i> <span data-i18n="modalCreateInvoiceTitle">New Freelancer Invoice</span>
+        </h3>
+        <button data-close-modal class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <form id="invoiceForm" class="space-y-4 mt-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblClientName">Client Name *</label>
+            <input type="text" id="invClientName" required placeholder="Acme Corporation" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblClientEmail">Client Email</label>
+            <input type="email" id="invClientEmail" placeholder="billing@acme.com" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblInvoiceNumber">Invoice Number</label>
+            <input type="text" id="invNumber" placeholder="INV-2026-046" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblIssueDate">Issue Date</label>
+            <input type="date" id="invIssueDate" required value="2026-11-06" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblDueDate">Due Date</label>
+            <input type="date" id="invDueDate" required value="2026-11-20" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+          </div>
+        </div>
+
+        <!-- Line item -->
+        <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800 space-y-2">
+          <p class="text-xs font-bold text-slate-300" data-i18n="lblServiceDesc">Deliverable / Service</p>
+          <div class="grid grid-cols-12 gap-2">
+            <input type="text" id="invItemDesc" placeholder="e.g. Full-Stack Web Development & API" class="col-span-7 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200" required>
+            <input type="number" id="invItemQty" value="1" min="1" placeholder="Qty" class="col-span-2 bg-slate-950 border border-slate-800 rounded-lg px-2 py-1.5 text-xs text-center text-slate-200">
+            <input type="number" id="invItemRate" step="1" placeholder="Rate (₨)" class="col-span-3 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-right font-numeric text-emerald-400" required>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblTaxRateOpt">Tax Rate % (Optional)</label>
+            <input type="number" id="invTaxRate" value="0" min="0" max="50" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblPaymentTerms">Payment Instructions</label>
+            <input type="text" id="invNotes" placeholder="Bank IBAN, Raast ID or Sadapay" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-800 flex justify-end gap-2">
+          <button type="button" data-close-modal class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300" data-i18n="btnCancel">Cancel</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-xs font-bold text-white shadow-lg shadow-indigo-500/20" data-i18n="btnIssueInvoice">Create & Issue</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 4: INVOICE PREVIEW / PRINT -->
+  <div id="modalInvoicePreview" class="modal-wrapper modal-backdrop fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-2xl rounded-2xl p-6 border border-slate-800 shadow-2xl relative max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-800 no-print">
+        <h3 class="text-base font-bold text-white" data-i18n="btnPreview">Invoice Preview</h3>
+        <div class="flex items-center gap-2">
+          <button onclick="window.print()" class="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold shadow-md shadow-emerald-500/20 flex items-center gap-1.5">
+            <i class="fa-solid fa-print"></i> <span data-i18n="btnPrintPDF">Print / Save as PDF</span>
+          </button>
+          <button data-close-modal class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+      </div>
+
+      <div id="invoicePreviewContent" class="mt-4">
+        <!-- Injected via app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 5: ADD LOAN / DEBT -->
+  <div id="modalAddLoan" class="modal-wrapper modal-backdrop fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-lg rounded-2xl p-6 border border-slate-800 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-landmark text-amber-400"></i> <span data-i18n="modalAddLoanTitle">New Loan / Debt Record</span>
+        </h3>
+        <button data-close-modal class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <form id="loanForm" class="space-y-4 mt-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblGoalTitle">Loan Title *</label>
+          <input type="text" name="title" required placeholder="e.g. MacBook Pro Installment / Friend Advance" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblBillingType">Direction / Type</label>
+            <select name="type" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-2.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+              <option value="Liability (You Owe)">Liability (You Owe)</option>
+              <option value="Receivable (Owed to You)">Receivable (Owed to You)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblClientName">Counterparty (Bank/Person) *</label>
+            <input type="text" name="lenderOrBorrower" required placeholder="e.g. Bank Alfalah / Bilal" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="principal">Principal (₨) *</label>
+            <input type="number" name="principal" step="1" required placeholder="300000" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-numeric text-slate-100 focus:outline-none focus:border-amber-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="monthlyEMI">Monthly EMI (₨)</label>
+            <input type="number" name="monthlyPayment" step="1" placeholder="25000" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-numeric text-slate-100 focus:outline-none focus:border-amber-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="interestRate">Interest Rate %</label>
+            <input type="number" name="interestRate" step="0.1" value="0" placeholder="0" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-numeric text-slate-100 focus:outline-none focus:border-amber-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblDate">Start Date</label>
+            <input type="date" name="startDate" value="2026-11-06" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="matures">Matures / Due Date</label>
+            <input type="date" name="endDate" value="2027-11-06" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblNotes">Notes</label>
+          <input type="text" name="notes" placeholder="0% markup installment" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
+        </div>
+
+        <div class="pt-3 border-t border-slate-800 flex justify-end gap-2">
+          <button type="button" data-close-modal class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300" data-i18n="btnCancel">Cancel</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-xs font-bold text-white shadow-lg shadow-amber-500/20" data-i18n="btnAddLoan">Save Loan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 6: LOG LOAN PAYMENT -->
+  <div id="modalLoanPayment" class="modal-wrapper modal-backdrop fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-sm rounded-2xl p-6 border border-slate-800 shadow-2xl relative">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <h3 class="text-base font-bold text-white" data-i18n="modalLoanPaymentTitle">Log Loan Repayment</h3>
+        <button data-close-modal class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="loanPaymentForm" class="space-y-4 mt-4">
+        <input type="hidden" id="payLoanId">
+        <p id="payLoanTitle" class="text-xs text-slate-300 font-semibold"></p>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblPaymentAmt">Payment Amount (₨) *</label>
+          <input type="number" id="payLoanAmount" step="1" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm font-numeric font-bold text-emerald-400 focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div class="pt-3 border-t border-slate-800 flex justify-end gap-2">
+          <button type="button" data-close-modal class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300" data-i18n="btnCancel">Cancel</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-xs font-bold text-white shadow-lg shadow-emerald-500/20" data-i18n="btnConfirmPayment">Confirm Payment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 7: ADD BUDGET -->
+  <div id="modalAddBudget" class="modal-wrapper modal-backdrop fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-sm rounded-2xl p-6 border border-slate-800 shadow-2xl relative">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <h3 class="text-base font-bold text-white" data-i18n="modalAddBudgetTitle">Add Budget Limit</h3>
+        <button data-close-modal class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="budgetForm" class="space-y-4 mt-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblCategory">Expense Category *</label>
+          <input type="text" name="category" required placeholder="e.g. Marketing & Ads" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblMonthlyCap">Monthly Cap (₨) *</label>
+          <input type="number" name="monthlyLimit" step="1000" required placeholder="50000" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-numeric text-cyan-400 font-bold">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblColor">Highlight Color</label>
+          <input type="color" name="color" value="#06b6d4" class="w-full h-9 bg-slate-900 border border-slate-800 rounded-xl px-2 py-1 cursor-pointer">
+        </div>
+
+        <div class="pt-3 border-t border-slate-800 flex justify-end gap-2">
+          <button type="button" data-close-modal class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300" data-i18n="btnCancel">Cancel</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-xs font-bold text-white" data-i18n="btnCreateBudget">Create Budget</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 8: ADD GOAL -->
+  <div id="modalAddGoal" class="modal-wrapper modal-backdrop fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-sm rounded-2xl p-6 border border-slate-800 shadow-2xl relative">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <h3 class="text-base font-bold text-white" data-i18n="modalAddGoalTitle">New Savings / Gear Goal</h3>
+        <button data-close-modal class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="goalForm" class="space-y-4 mt-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblGoalTitle">Goal Title *</label>
+          <input type="text" name="title" required placeholder="e.g. Sony A7S Camera / Emergency Cushion" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblCategory">Category</label>
+          <input type="text" name="category" placeholder="Hardware Upgrade" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblTargetAmt">Target (₨) *</label>
+            <input type="number" name="targetAmount" required placeholder="500000" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-numeric text-purple-400 font-bold">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblSavedAmt">Saved So Far (₨)</label>
+            <input type="number" name="currentAmount" value="0" placeholder="0" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-numeric text-emerald-400 font-bold">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="lblTargetDate">Target Date</label>
+          <input type="date" name="targetDate" value="2027-01-01" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
+        </div>
+
+        <div class="pt-3 border-t border-slate-800 flex justify-end gap-2">
+          <button type="button" data-close-modal class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300" data-i18n="btnCancel">Cancel</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-purple-500 hover:bg-purple-600 text-xs font-bold text-white" data-i18n="btnSaveGoal">Save Goal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Application Scripts -->
+  <script src="js/store.js"></script>
+  <script src="js/models.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
